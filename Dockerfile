@@ -6,10 +6,9 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Stage 2: Run the application
-# Changed from alpine to slim
-FROM openjdk:8-jdk-buster
+FROM openjdk:8-jdk  # valid tag for Docker Hub
 ENV PROJECT_HOME=/opt/app
 WORKDIR $PROJECT_HOME
 COPY --from=build /build/target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
