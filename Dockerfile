@@ -7,7 +7,7 @@ RUN mvn clean package -DskipTests
 
 # Stage 2: Run the application
 # Changed from alpine to slim
-FROM openjdk:8-jdk-slim
+FROM openjdk:8-jdk-buster
 ENV PROJECT_HOME=/opt/app
 WORKDIR $PROJECT_HOME
 COPY --from=build /build/target/*.jar app.jar
