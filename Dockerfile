@@ -1,15 +1,15 @@
-# Stage 1: Build the application
-FROM maven:3.8.5-openjdk-8-slim AS build
-WORKDIR /app
+# Stage 1: Build
+FROM maven:3.9.6-eclipse-temurin-8 AS build
+WORKDIR /build
 COPY pom.xml .
-RUN mvn dependency:go-offline -B
 COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Stage 2: Run the application
-FROM openjdk:8-jdk-slim  # <--- Changed from alpine to slim
+# Changed from alpine to slim
+FROM openjdk:8-jdk-slim
 ENV PROJECT_HOME=/opt/app
 WORKDIR $PROJECT_HOME
-COPY --from=build /app/target/spring-boot-mongo-1.0.jar $PROJECT_HOME/spring-boot-mongo.jar
+COPY --from=build /build/target/*.jar app.jar
 EXPOSE 8080
-CMD ["java", "-jar", "./spring-boot-mongo.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
