@@ -6,7 +6,8 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Stage 2: Run the application
-FROM openjdk:8-jdk  # valid tag for Docker Hub
+# Using OpenJDK 8 image
+FROM openjdk:8-jdk
 ENV PROJECT_HOME=/opt/app
 WORKDIR $PROJECT_HOME
 COPY --from=build /build/target/*.jar app.jar
