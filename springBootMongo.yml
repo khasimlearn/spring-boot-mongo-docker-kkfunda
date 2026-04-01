@@ -52,7 +52,7 @@ kind: Deployment
 metadata:
   name: mongodb-deployment
 spec:
-  replicas: 1
+  replicas: 1   # ⚠️ Keep Mongo as 1
   selector:
     matchLabels:
       app: mongodb
@@ -67,7 +67,8 @@ spec:
             claimName: pvc-hostpath
       containers:
         - name: mongodb
-          image: mongo
+          image: mongo:6.0
+          args: ["--bind_ip_all"]   # ✅ IMPORTANT FIX
           ports:
             - containerPort: 27017
           env:
@@ -83,9 +84,9 @@ spec:
                   key: password
           volumeMounts:
             - name: mongodb-pvc
-              mountPath: /data/db   # ✅ FIXED
+              mountPath: /data/db
 
-          resources:               # ✅ FIXED INDENTATION
+          resources:
             requests:
               memory: "256Mi"
               cpu: "250m"
@@ -116,7 +117,7 @@ kind: Deployment
 metadata:
   name: springapp-deployment
 spec:
-  replicas: 1   # ✅ REDUCED
+  replicas: 2   # ✅ ADDED (safe scaling)
   selector:
     matchLabels:
       app: springapp
@@ -134,7 +135,7 @@ spec:
             - name: SPRING_DATA_MONGODB_URI
               value: mongodb://springapp:devdb%40123@mongo:27017
 
-          resources:              # ✅ FIXED INDENTATION
+          resources:
             requests:
               memory: "256Mi"
               cpu: "250m"
