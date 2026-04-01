@@ -83,7 +83,17 @@ spec:
                   key: password
           volumeMounts:
             - name: mongodb-pvc
-              mountPath: /data/db
+              mountPath: /data/db   # ✅ FIXED
+
+          resources:               # ✅ FIXED INDENTATION
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+              ephemeral-storage: "500Mi"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+              ephemeral-storage: "1Gi"
 
 ---
 # ---------------- Mongo Service ----------------
@@ -106,7 +116,7 @@ kind: Deployment
 metadata:
   name: springapp-deployment
 spec:
-  replicas: 2
+  replicas: 1   # ✅ REDUCED
   selector:
     matchLabels:
       app: springapp
@@ -122,17 +132,17 @@ spec:
             - containerPort: 8080
           env:
             - name: SPRING_DATA_MONGODB_URI
-              value: mongodb://springapp:devdb@123@mongo:27017
+              value: mongodb://springapp:devdb%40123@mongo:27017
 
-          resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-            ephemeral-storage: "500Mi"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-            ephemeral-storage: "1Gi"
+          resources:              # ✅ FIXED INDENTATION
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+              ephemeral-storage: "500Mi"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+              ephemeral-storage: "1Gi"
 
 ---
 # ---------------- Spring Boot Service ----------------
