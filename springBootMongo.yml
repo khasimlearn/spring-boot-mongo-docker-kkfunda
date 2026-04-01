@@ -60,7 +60,7 @@ spec:
     spec:
       containers:
       - name: springappcontainer
-        image: "pls give your imjage information"
+        image: "khasimlearn/spring-mongo-application"
         ports:
         - containerPort: 8080
         env:
