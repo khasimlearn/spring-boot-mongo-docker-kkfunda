@@ -117,7 +117,7 @@ kind: Deployment
 metadata:
   name: springapp-deployment
 spec:
-  replicas: 2   # ✅ ADDED (safe scaling)
+  replicas: 1   # ✅ ADDED (safe scaling)
   selector:
     matchLabels:
       app: springapp
