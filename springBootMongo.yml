@@ -52,7 +52,7 @@ kind: Deployment
 metadata:
   name: mongodb-deployment
 spec:
-  replicas: 1   # ⚠️ Keep Mongo as 1
+  replicas: 1
   selector:
     matchLabels:
       app: mongodb
@@ -68,7 +68,7 @@ spec:
       containers:
         - name: mongodb
           image: mongo:6.0
-          args: ["--bind_ip_all"]   # ✅ IMPORTANT FIX
+          args: ["--bind_ip_all"]
           ports:
             - containerPort: 27017
           env:
@@ -85,16 +85,15 @@ spec:
           volumeMounts:
             - name: mongodb-pvc
               mountPath: /data/db
-
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "250m"
-              ephemeral-storage: "500Mi"
+              memory: "128Mi"
+              cpu: "100m"
+              ephemeral-storage: "200Mi"
             limits:
-              memory: "512Mi"
-              cpu: "500m"
-              ephemeral-storage: "1Gi"
+              memory: "256Mi"
+              cpu: "200m"
+              ephemeral-storage: "500Mi"
 
 ---
 # ---------------- Mongo Service ----------------
@@ -117,7 +116,7 @@ kind: Deployment
 metadata:
   name: springapp-deployment
 spec:
-  replicas: 1   # ✅ ADDED (safe scaling)
+  replicas: 1
   selector:
     matchLabels:
       app: springapp
@@ -134,16 +133,15 @@ spec:
           env:
             - name: SPRING_DATA_MONGODB_URI
               value: mongodb://springapp:devdb%40123@mongo:27017
-
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "250m"
-              ephemeral-storage: "500Mi"
+              memory: "128Mi"
+              cpu: "100m"
+              ephemeral-storage: "200Mi"
             limits:
-              memory: "512Mi"
-              cpu: "500m"
-              ephemeral-storage: "1Gi"
+              memory: "256Mi"
+              cpu: "200m"
+              ephemeral-storage: "500Mi"
 
 ---
 # ---------------- Spring Boot Service ----------------
